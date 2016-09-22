@@ -1,0 +1,5 @@
+#ifndef _START_H
+#define _START_H
+int main(int argc, char const *argv[]);
+void _start();
+#endif
