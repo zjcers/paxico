@@ -1,9 +1,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
-int main (int argc, char const *argv[]) {
+int main (unsigned int argc, const char** argv) {
   print("Got ");
-  char* str = (char*)malloc(256);
+  static char str[256];
   memset(str, 0, 256);
   print(itoa(argc, str, 10));
   print(" arguments\n");
@@ -17,9 +17,9 @@ int main (int argc, char const *argv[]) {
     memset(str, 0, 256);
     print(itoa(i, str, 10));
     print("]: ");
-    printc(*argv[i]);
+    memset(str, 0, 256);
+    print(itoa(argv[i], str, 10));
     print("\n");
   }
-  free(str);
   return 0;
 }
