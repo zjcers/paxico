@@ -16,3 +16,9 @@ Makefile.in
 /install-sh
 /missing
 /stamp-h1
+ar-lib
+build/
+config.guess
+config.sub
+ltmain.sh
+test-driver
