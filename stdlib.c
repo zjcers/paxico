@@ -38,18 +38,26 @@ char* itoa(int value, char* str, size_t base) {
     str[j] = (rev%10)+48;
     rev = rev/10;
   }
-  str[j] = 0;/*
-  size_t i = 0;
-  for (i=0; value>0; i++) {
-    str[i] = 48+(value%10);
-    value = value/10;
+  str[j] = 0;
+  return str;
+}
+char* uitoa(int value, char* str, size_t base) {
+  if (value == 0) {
+    str[0] = '0';
+    str[1] = 0;
+    return str;
   }
-  str[i+1] = 0;
-  str[0] = 'b';
-  str[1] = 'u';
-  str[2] = 't';
-  str[3] = 't';
-  str[4] = 's';
-  str[5] = 0;*/
+  size_t i = 0;
+  int rev = 0;
+  size_t j = 0;
+  while(value > 0) {
+    rev = rev*base+(value%base);
+    value = value/base;
+  }
+  for (j=i; rev>0; j++) {
+    str[j] = (rev%base)+48;
+    rev = rev/base;
+  }
+  str[j] = 0;
   return str;
 }
