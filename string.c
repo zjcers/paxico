@@ -8,7 +8,7 @@ size_t strlen(const char* str) {
 size_t strcpy(const char* src, char* dest) {
   size_t count = 0;
   while (*src) {
-    *(dest) = *(src++);
+    *(dest++) = *(src++);
     count++;
   }
   return(count);
@@ -24,10 +24,13 @@ size_t strncpy(const char* src, char* dest, size_t n) {
 int strcmp(const char* src, const char* dest) {
   while (*src) {
     if (*(dest++) != *(src++)) {
-      return (0);
+      return (FALSE);
     }
   }
-  return (1);
+	if (*dest == NULL) {
+  	return (TRUE);
+	}
+	return (FALSE);
 }
 void* memset (void* ptr, int value, size_t num) {
   size_t i;
