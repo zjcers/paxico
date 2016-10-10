@@ -11,7 +11,9 @@ void init_malloc() {
     base->length = 0;
     base->data = NULL;
     base->next = NULL;
-//    printf("base at %u, endNode at %u\n", base, getEndNode());
+    #ifdef DEBUG_MALLOC
+      printf("base at %u, endNode at %u\n", base, getEndNode());
+    #endif
   }
 }
 malloc_node* getEndNode() {
@@ -22,20 +24,28 @@ malloc_node* getEndNode() {
   return (curNode);
 }
 malloc_node* findHoleInList(size_t n) {
-//  printf("Searching for hole in list (n=%u)\n", n);
+  #ifdef DEBUG_MALLOC
+    printf("Searching for hole in list (n=%u)\n", n);
+  #endif
   size_t i = 0;
   malloc_node* curNode = (malloc_node*)getOriginalBreak();
   while(curNode->next != NULL) {
-//    printf("findholeinlist at curNode=%u\n",curNode);
+    #ifdef DEBUG_MALLOC
+      printf("findholeinlist at curNode=%u\n",curNode);
+    #endif
     if ((size_t)curNode->next-((size_t)curNode+sizeof(curNode)+curNode->length) >= n+sizeof(malloc_node)) {
-//      printf("Returning after i=%u\n",i);
-//      printf("sizeof(malloc_node)=%u\n",sizeof(malloc_node) );
-//      printf("curNode=%u\n", (zjc::size_t)curNode);
-//      printf("curNode->next=%u\n", (zjc::size_t)curNode->next);
-//      printf("Space=%u\n",(zjc::size_t)(curNode->next)-((zjc::size_t)curNode+sizeof(malloc_node)+curNode->length));
+      #ifdef DEBUG_MALLOC
+        printf("Returning after i=%u\n",i);
+        printf("sizeof(malloc_node)=%u\n",sizeof(malloc_node) );
+        printf("curNode=%u\n", (zjc::size_t)curNode);
+        printf("curNode->next=%u\n", (zjc::size_t)curNode->next);
+        printf("Space=%u\n",(zjc::size_t)(curNode->next)-((zjc::size_t)curNode+sizeof(malloc_node)+curNode->length));
+      #endif
       return (curNode);
     }
-//    printf("i: %u\n",i);
+    #ifdef DEBUG_MALLOC
+      printf("i: %u\n",i);
+    #endif
     i++;
     curNode = curNode->next;
   }
@@ -48,9 +58,13 @@ malloc_node* findHoleAfterList(size_t n) {
   return (NULL);
 }
 void addAfter(malloc_node* front) {
-//  printf("addAfter called with front=%u", front);
+  #ifdef DEBUG_MALLOC
+    printf("addAfter called with front=%u", front);
+  #endif
   malloc_node* next = (malloc_node*)(((void*)front)+sizeof(malloc_node)+front->length);
-//  printf("addafter making new node at %u", next);
+  #ifdef DEBUG_MALLOC
+    printf("addafter making new node at %u", next);
+  #endif
   next->next = front->next;
   front->next = next;
   next->data = next+sizeof(next);
@@ -69,12 +83,18 @@ void* malloc(size_t n) {
     isInit++;
     init_malloc();
   }
-//  printf("malloc called with n=%u\n", n);
+  #ifdef DEBUG_MALLOC
+    printf("malloc called with n=%u\n", n);
+  #endif
   malloc_node* place = findHoleInList(n);
   if (place == NULL) {
-//    printf("findHoleInList called with n=%u, hole not found\n", n);
+    #ifdef DEBUG_MALLOC
+      printf("findHoleInList called with n=%u, hole not found\n", n);
+    #endif
     place = findHoleAfterList(n);
-//    printf("putting node after %u\n", place);
+    #ifdef DEBUG_MALLOC
+      printf("putting node after %u\n", place);
+    #endif
     if (place == NULL) {
       void* oldBreak = sys_sbrk(0);
       void* newBreak = sys_sbrk(16384);
@@ -89,7 +109,9 @@ void* malloc(size_t n) {
   addAfter(place);
   place = place->next;
   place->length = n;
-//  printf("malloc done\n");
+  #ifdef DEBUG_MALLOC
+    printf("malloc done\n");
+  #endif
   return (place->data);
 }
 int free(void* addr) {
@@ -111,7 +133,9 @@ int free(void* addr) {
 }
 size_t getFreeSpace() {
   malloc_node* endNode = getEndNode();
-//  printf("endNode: %u\n", endNode);
+  #ifdef DEBUG_MALLOC
+    printf("endNode: %u\n", endNode);
+  #endif
   size_t upperAddr = (size_t)sys_sbrk(0);
   size_t lowerAddr = (size_t)endNode+endNode->length+sizeof(malloc_node);
   return upperAddr-lowerAddr;
@@ -124,6 +148,8 @@ void* getOriginalBreak() {
   return(original_break);
 }
 int checkLeaks() {
-//  printf("base addr: %u endNode addr: %u\n", base, endNode);
+  #ifdef DEBUG_MALLOC
+    printf("base addr: %u endNode addr: %u\n", base, endNode);
+  #endif
   return(getOriginalBreak() != getEndNode());
 }
