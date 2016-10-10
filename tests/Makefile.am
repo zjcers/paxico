@@ -1,6 +1,3 @@
-check_PROGRAMS = start_noargs strcmp_eq
-LDADD = -L$(top_srcdir)/libc/ -lc
-AM_LDFLAGS = -e _start
-AM_CFLAGS = -I$(top_srcdir)/libc/include -Wall -Werror -g -ffreestanding -nostdlib
-TESTS = start_noargs strcmp_eq
+export LDADD = -L$(abs_top_builddir)/ -lc $(abs_top_builddir)/start.o
+SUBDIRS = start string stdio stdlib
 all:

@@ -12,7 +12,12 @@ LT_INIT
 dnl Tell autoconf about the makefiles we need to build
 AC_CONFIG_FILES([
 Makefile
-test/Makefile
+tests/Makefile
+tests/math/Makefile
+tests/start/Makefile
+tests/stdio/Makefile
+tests/stdlib/Makefile
+tests/string/Makefile
 ])
 
 dnl Process Makefile.in to create Makefile
