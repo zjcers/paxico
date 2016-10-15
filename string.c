@@ -1,4 +1,5 @@
 #include "stdint.h"
+#include "stdbool.h"
 #include "string.h"
 size_t strlen(const char* str) {
   const char* s;
@@ -24,13 +25,13 @@ size_t strncpy(const char* src, char* dest, size_t n) {
 int strcmp(const char* src, const char* dest) {
   while (*src) {
     if (*(dest++) != *(src++)) {
-      return (FALSE);
+      return (false);
     }
   }
 	if (*dest == NULL) {
-  	return (TRUE);
+  	return (true);
 	}
-	return (FALSE);
+	return (false);
 }
 void* memset (void* ptr, int value, size_t num) {
   size_t i;
