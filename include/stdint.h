@@ -2,8 +2,6 @@
 #define _Z_STDINT_H
 /*See https://sourceforge.net/p/predef/wiki/DataModels/ */
 #define NULL 0
-#define TRUE 1
-#define FALSE 0
 #ifdef __ILP32__
   typedef unsigned char uint8_t;
   typedef unsigned short uint16_t;
