@@ -1,7 +1,7 @@
 {
   "execPath": "/usr/bin/gcc",
-  "gccDefaultCFlags": "-Wall -Werror -ffreestanding -nostdlib -fno-builtin -std=gnu99 -c",
+  "gccDefaultCFlags": "-Wall -Werror -nostdinc -ffreestanding -fno-builtin -std=gnu99 -c -o /dev/null",
   "gccErrorLimit": 15,
-  "gccIncludePaths": ".,./include",
+  "gccIncludePaths": "./include",
   "gccSuppressWarnings": true
 }
