@@ -1,0 +1,17 @@
+set prog "argv"
+set test "argv 0"
+spawn ./$prog 0
+expect eof
+lassign [wait] pid spawnid os_error_flag value
+if {$os_error_flag == 0} {
+  if {$value == 0} {
+    send_user "$test PASS\n"
+    pass "$test"
+  } else {
+    send_user "$test FAIL (Wrong value returned)\n"
+    fail "$test"
+  }
+} else {
+  send_user "$test FAIL (OS error)\n"
+  fail "$test"
+}
