@@ -5,6 +5,7 @@
 #include "math.h"
 #include "stdlib.h"
 /*A convenience method to shift a digit into a number*/
+int addToNumber(int prevNum, char currDigit);
 inline int addToNumber(int prevNum, char currDigit) {
 	/*48 is the offset between ASCII character codes and actual numbers*/
 	int currNum = (int)currDigit - 48;
