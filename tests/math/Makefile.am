@@ -1,7 +1,3 @@
-check_PROGRAMS =
-LDADD = -L$(top_srcdir)/ -lc
-AM_LDFLAGS = -e _start
-AM_CFLAGS = -I$(top_srcdir)/include -Wall -Werror -g -ffreestanding -nostdlib
-AUTOMAKE_OPTIONS = dejagnu
-DEJATOOL = 
+check_PROGRAMS = fabspositive fabsnegative pow1x2 pow0x2 pow2_5x2_5 pow2_5xn2_5
+TESTS = $(check_PROGRAMS)
 all:

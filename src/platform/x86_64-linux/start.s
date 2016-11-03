@@ -23,6 +23,3 @@
     call main
     movq %rax, %rdi
     call sys_exit
-
-.data
-  stuff: .ascii "hello\n\0"
