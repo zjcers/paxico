@@ -1,8 +1,4 @@
-#include "string.h"
-#include "stdint.h"
 #include "stdbool.h"
-#include "stdio.h"
-#include "math.h"
 #include "stdlib.h"
 /*A convenience method to shift a digit into a number*/
 int addToNumber(int prevNum, char currDigit);
@@ -43,49 +39,4 @@ int atoi(const char* src) {
 		return ret*-1;
 	}
 	return ret;
-}
-char* itoa(int value, char* str, size_t base) {
-  if (value == 0) {
-    str[0] = '0';
-    str[1] = 0;
-    return str;
-  }
-  size_t i = 0;
-  if (value < 0) {
-    str[0] = '-';
-    value = value*-1;
-    i++;
-  }
-  int rev = 0;
-  size_t j = 0;
-  while(value > 0) {
-    rev = rev*10+(value%10);
-    value = value/10;
-  }
-  for (j=i; rev>0; j++) {
-    str[j] = (rev%10)+48;
-    rev = rev/10;
-  }
-  str[j] = 0;
-  return str;
-}
-char* uitoa(int value, char* str, size_t base) {
-  if (value == 0) {
-    str[0] = '0';
-    str[1] = 0;
-    return str;
-  }
-  size_t i = 0;
-  int rev = 0;
-  size_t j = 0;
-  while(value > 0) {
-    rev = rev*base+(value%base);
-    value = value/base;
-  }
-  for (j=i; rev>0; j++) {
-    str[j] = (rev%base)+48;
-    rev = rev/base;
-  }
-  str[j] = 0;
-  return str;
 }
