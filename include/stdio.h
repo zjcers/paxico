@@ -1,5 +1,9 @@
 #ifndef _Z_STDIO_H
 #define _Z_STDIO_H
-void print(const char* str);
-void printc(char str);
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+#define EOF -1001
+int puts(const char* str);
+int putchar(int str);
 #endif

@@ -1,13 +1,29 @@
 #include "stdint.h"
 #include "string.h"
-#include "fcntl.h"
 #include "syscalls.h"
+#include "errno.h"
 #include "stdio.h"
 
-void print(const char* str) {
-  size_t length = strlen(str);
-  sys_write(1, str, length);
+int puts(const char* str) {
+	/*Declare variables*/
+	size_t length;
+	/*End declare variables
+		Get the length of the given string */
+	length = strlen(str);
+	/*The rest is just a wrapper around a system call*/
+	return sys_write(STDOUT_FILENO, str, length);
+
 }
-void printc(char str) {
-  sys_write(1, &str, 1);
+int putchar(int str) {
+	/*Declare variables*/
+	char c;
+	int ret;
+	/*End declare variables
+		Cast the given character to a uint8_t*/
+	c = (uint8_t) str;
+	/*Execute system call, see write(2)*/
+	ret = sys_write(STDOUT_FILENO, &c, 1);
+	/*If the write failed return EOF, else return str*/
+	ret = (ret == -1) ? EOF : str;
+	return ret;
 }
