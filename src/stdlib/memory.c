@@ -1,12 +1,30 @@
-#include "stdint.h"
-#include "memory.h"
-#include "syscalls.h"
+#include <stdint.h>
+#include <memory.h>
+#include <unistd.h>
+/*Linked list node*/
+typedef struct malloc_node {
+  struct malloc_node* next;
+  unsigned int length;
+  void* data;
+} malloc_node;
+/*Forward declarations for functions private to this file*/
+void* getOriginalBreak();
+malloc_node* getEndNode();
+malloc_node* findHoleInList(size_t n);
+malloc_node* findHoleAfterList(size_t n);
+void addAfter(malloc_node* front);
+void delAfter(malloc_node* front);
+size_t getFreeSpace();
+/*End forward declarations*/
+/*Alias for test suite:*/
+#define _LIBSIMPLEC_get_free_space() getFreeSpace()
+/*Initialization function called by start up code*/
 void init_malloc() {
   void* originalBreak = getOriginalBreak();
-  void* currentBreak = sys_sbrk(0);
+  void* currentBreak = sbrk(0);
   malloc_node* base;
   if (currentBreak == originalBreak) {
-    currentBreak = sys_sbrk(16384);
+    currentBreak = sbrk(16384);
     base = (malloc_node*)originalBreak;
     base->length = 0;
     base->data = NULL;
@@ -96,8 +114,8 @@ void* malloc(size_t n) {
       printf("putting node after %u\n", place);
     #endif
     if (place == NULL) {
-      void* oldBreak = sys_sbrk(0);
-      void* newBreak = sys_sbrk(16384);
+      void* oldBreak = sbrk(0);
+      void* newBreak = sbrk(16384);
       if (newBreak > oldBreak) {
         return (malloc(n));
       }
@@ -122,7 +140,7 @@ int free(void* addr) {
     if (curNode->data == addr) {
       delAfter(lastNode);
       if (getFreeSpace() > 16384) {
-        sys_sbrk(-16384);
+        sbrk(-16384);
       }
       return(1);
     }
@@ -136,18 +154,18 @@ size_t getFreeSpace() {
   #ifdef DEBUG_MALLOC
     printf("endNode: %u\n", endNode);
   #endif
-  size_t upperAddr = (size_t)sys_sbrk(0);
+  size_t upperAddr = (size_t)sbrk(0);
   size_t lowerAddr = (size_t)endNode+endNode->length+sizeof(malloc_node);
   return upperAddr-lowerAddr;
 }
 void* getOriginalBreak() {
   static void* original_break = NULL;
   if (original_break == NULL) {
-    original_break = sys_sbrk(0);
+    original_break = sbrk(0);
   }
   return(original_break);
 }
-int checkLeaks() {
+int _LIBSIMPLEC_check_leaks() {
   #ifdef DEBUG_MALLOC
     printf("base addr: %u endNode addr: %u\n", base, endNode);
   #endif

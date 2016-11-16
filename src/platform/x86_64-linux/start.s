@@ -22,4 +22,7 @@
     movq %r9, %rsi
     call main
     movq %rax, %rdi
-    call sys_exit
+    call _exit
+.data
+	.globl errno
+	errno: .zero 4
