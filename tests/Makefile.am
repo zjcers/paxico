@@ -1,3 +1,3 @@
-export LDADD = -L$(abs_top_builddir)/src/ -lc $(abs_top_builddir)/start.o
-SUBDIRS = start string stdio stdlib math
+export AM_CFLAGS += --sysroot=$(abs_top_builddir) -B$(abs_top_builddir)/usr/lib
+SUBDIRS = start platform memory stdio string math stdlib
 all:

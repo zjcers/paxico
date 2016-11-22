@@ -19,12 +19,12 @@ LT_INIT
 
 dnl Detect platform
 case $target in
-	*linux*) PLATFORM_OS='-DPLATFORM_LINUX' ;;
+	*linux*) PLATFORM_OS='PLATFORM_LINUX' ;;
 	*) PLATFORM_OS='' ;;
 esac
 AC_SUBST([PLATFORM_OS])
 case $target in
-	*x86_64*) PLATFORM_CPU='-DPLATFORM_X86_64' ;;
+	*x86_64*) PLATFORM_CPU='PLATFORM_X86_64' ;;
 	*) PLATFORM_CPU='' ;;
 esac
 AC_SUBST([PLATFORM_CPU])
@@ -46,6 +46,11 @@ tests/start/Makefile
 tests/stdio/Makefile
 tests/stdlib/Makefile
 tests/string/Makefile
+tests/memory/Makefile
+tests/platform/Makefile
+tests/platform/PLATFORM_LINUX/Makefile
+include/Makefile
+include/sys/Makefile
 ])
 
 dnl Process Makefile.in to create Makefile
