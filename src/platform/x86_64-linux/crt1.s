@@ -1,3 +1,9 @@
+#This is the very first file linked into a program (before the program's object file)
+#It needs to define _start, which is the entry point
+#_start has to do the following:
+#	move argv and envp somewhere safe
+#	set up the stack
+#	call the libc entry point
 .text
   .globl _start
   _start:
