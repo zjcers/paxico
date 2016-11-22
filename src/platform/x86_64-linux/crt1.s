@@ -7,28 +7,17 @@
 .text
   .globl _start
   _start:
-    call init_malloc
-    popq %r15
-    movq %r15, %rax
-    movq $8, %r10
-    mulq %r10
-    movq %rax, %rdi
-    call malloc
-    movq %rax, %r9
-    argvloop:
-      popq %r8
-      cmpq $0, %r8
-      jz doneargv
-      movq %r8, (%rax)
-      addq $8, %rax
-      jmp argvloop
-    doneargv:
-      addq $8, %rsp
-    movq %r15, %rdi
-    movq %r9, %rsi
-    call main
-    movq %rax, %rdi
-    call _exit
+    xorq %rbp, %rbp #set the base point to 0
+    popq %rdi #get argc off of the stack and put it in rdi
+    movq %rsp, %rsi #copy the base address of argv to rsi
+    movq %rdi, %rax #copy rdi to rax
+    movq $8, %r8
+    mulq %r8 #get the length of of argv - 8
+    addq $16, %rax #rax now has the length of argv + 8
+    addq %rsp, %rax
+    movq %rax, %rdx # third argument is envp
+    addq $8, %rsp # realign rsp to a 16-byte boundary
+    call _LIBSIMPLEC_libc_main
 .data
 	.globl errno
 	errno: .zero 4

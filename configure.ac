@@ -38,6 +38,7 @@ src/stdio/Makefile
 src/stdlib/Makefile
 src/string/Makefile
 src/getopt/Makefile
+src/misc/Makefile
 src/platform/Makefile
 src/platform/x86_64-linux/Makefile
 tests/Makefile
