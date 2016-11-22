@@ -1,5 +1,5 @@
-#include "stdbool.h"
-#include "stdlib.h"
+#include <stdbool.h>
+#include <stdlib.h>
 /*A convenience method to shift a digit into a number*/
 static int addToNumber(int prevNum, char currDigit);
 inline int addToNumber(int prevNum, char currDigit) {

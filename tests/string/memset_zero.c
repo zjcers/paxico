@@ -1,4 +1,4 @@
-#include "string.h"
+#include <string.h>
 int main(int argc, char const *argv[]) {
 	static char str[256];
 	str[64] = 1;

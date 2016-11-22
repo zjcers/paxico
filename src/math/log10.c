@@ -1,4 +1,4 @@
-#include "math.h"
+#include <math.h>
 #ifdef PLATFORM_X86_64
 /*Computes the base-10 log of x*/
 double log10(double x) {

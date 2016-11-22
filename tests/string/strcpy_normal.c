@@ -1,4 +1,4 @@
-#include "string.h"
+#include <string.h>
 int main(int argc, char const *argv[]) {
 	static char str1[] = "hello";
 	static char str2[10];

@@ -1,4 +1,4 @@
-#include "math.h"
+#include <math.h>
 #ifdef PLATFORM_X86_64
 double pow(double base, double power) {
 	double output;

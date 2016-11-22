@@ -1,4 +1,4 @@
-#include "math.h"
+#include <math.h>
 #ifdef PLATFORM_X86
 /*Computes floating point absolute value*/
 double fabs(double x) {
