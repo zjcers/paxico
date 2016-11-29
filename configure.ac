@@ -48,6 +48,7 @@ tests/stdio/Makefile
 tests/stdlib/Makefile
 tests/string/Makefile
 tests/memory/Makefile
+tests/stdarg/Makefile
 tests/platform/Makefile
 tests/platform/PLATFORM_LINUX/Makefile
 include/Makefile
