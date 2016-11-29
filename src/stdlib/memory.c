@@ -95,12 +95,12 @@ void delAfter(malloc_node* front) {
 void* malloc(size_t n) {
   if (n == 0) {
     return (NULL);
-  }
+  }/*
   static int isInit = 0;
   if (isInit == 0) {
     isInit++;
     init_malloc();
-  }
+  }*/
   #ifdef DEBUG_MALLOC
     printf("malloc called with n=%u\n", n);
   #endif
