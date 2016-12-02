@@ -1,4 +1,4 @@
 AUTOMAKE_OPTIONS = dejagnu
-check_PROGRAMS = #malloc0 malloc20 free0 free20
+check_PROGRAMS = malloc0 malloc20 free0 free20
 TESTS = $(check_PROGRAMS)
 all:
