@@ -39,7 +39,7 @@ char* itoa(int value, char* str, size_t base);
 /*dynamic memory*/
 void *calloc(size_t nitems, size_t size);
 void* malloc(size_t n);
-int free(void* addr);
+void free(void* addr);
 
 /*Process handling*/
 void abort();

@@ -9,5 +9,5 @@ int main() {
 	char *str;
 	str = (char*)malloc(20);
 	free(str);
-	return !(_LIBSIMPLEC_check_leaks());
+	return !(_PAXICO_check_leaks());
 }
