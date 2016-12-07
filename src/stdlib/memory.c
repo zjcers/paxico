@@ -12,7 +12,7 @@ typedef struct malloc_node {
 	unsigned int length;
 	void* data;
 } malloc_node_t;
-static malloc_node_t base_node;
+static malloc_node_t *base_node;
 /*
  * Forward declarations for functions private to this file
  */
@@ -23,6 +23,7 @@ static malloc_node_t* findHoleAfterList(size_t n);
 static void addAfter(malloc_node_t* front);
 static void delAfter(malloc_node_t* front);
 size_t getFreeSpace();
+#define BLOCK_SIZE 4096
 /*
  * The following function must be called only once from the libc_main()
  * The call to getOriginalBreak() saves the original program break before it
@@ -31,16 +32,16 @@ size_t getFreeSpace();
 void init_malloc()
 {
 	getOriginalBreak();
-	base_node.next = NULL;
-	base_node.length = 0;
-	base_node.data = 0;
+	base_node = NULL;
 }
 /*
  * This function returns a pointer to the last node currently in the list
  */
 static malloc_node_t* getEndNode()
 {
-	malloc_node_t* curNode = &base_node;
+	malloc_node_t* curNode = base_node;
+	if (base_node == NULL)
+		return NULL;
 	while (curNode->next != NULL)
 		curNode = curNode->next;
 	return curNode;
@@ -51,12 +52,12 @@ static malloc_node_t* getEndNode()
  */
 static malloc_node_t* findHoleInList(size_t n)
 {
-	size_t i = 0;
-	malloc_node_t* curNode = &base_node;
+	malloc_node_t* curNode = base_node;
+	if (base_node == NULL)
+		return NULL;
 	while(curNode->next != NULL) {
 		if ((size_t)curNode->next-((size_t)curNode+sizeof(curNode)+curNode->length) >= n+sizeof(malloc_node_t))
 			return curNode;
-		i++;
 		curNode = curNode->next;
 	}
 	return NULL;
@@ -66,14 +67,14 @@ static malloc_node_t* findHoleInList(size_t n)
  */
 static inline malloc_node_t* findHoleAfterList(size_t n)
 {
+	malloc_node_t *end = getEndNode();
 	size_t total = n+sizeof(malloc_node_t);
-	if (getFreeSpace() >= total) {
-		goto out_after_list;
-	} else {
-		sbrk((((-1)/16384)+1)*16384);
-	}
-	out_after_list:
-		return getEndNode();
+	if (end)
+		if (((size_t)sbrk(NULL)-((size_t)end+(end->length)+sizeof(malloc_node_t))) >= total)
+			return end;
+	end = (malloc_node_t*)sbrk(NULL);
+	sbrk((((total-1)/BLOCK_SIZE)+1)*BLOCK_SIZE);
+	return end;
 }
 /*
  * addAfter only works when front != base_node
@@ -89,7 +90,7 @@ static void addAfter(malloc_node_t* front)
 /*
  * You can call this any time you want. It [shouldn't] segfault
  */
-void delAfter(malloc_node_t* front)
+static void delAfter(malloc_node_t* front)
 {
 	if (front->next != NULL)
 		front->next = front->next->next;
@@ -104,17 +105,18 @@ void* malloc(size_t n)
 	if (n == 0)
 		return (NULL);
 	malloc_node_t* place;
-	size_t total = sizeof(malloc_node_t) + n;
 	/*
 	 * Case 1: No nodes yet allocated
 	 */
-	if (base_node.next == NULL) {
+/*
+	if (base_node == NULL) {
 		sbrk((((total-1)/16384)+1)*16384);
 		place = (malloc_node_t*)getOriginalBreak();
-		base_node.next = place;
+		base_node = place;
 		place->data = getOriginalBreak() + sizeof(malloc_node_t);
 		goto malloc_out;
 	}
+*/
 	/*
 	 * Case 2: Nodes allocated already
 	 */
@@ -127,31 +129,36 @@ void* malloc(size_t n)
 	}
 	addAfter(place);
 	place = place->next;
-	malloc_out:
-		place->length = n;
-		return place->data;
+	place->length = n;
+	return place->data;
 }
 void free(void *addr)
 {
-	malloc_node_t *lastNode = &base_node;
-	malloc_node_t *curNode = base_node.next;
+	malloc_node_t *lastNode = base_node;
+	malloc_node_t *curNode = base_node;
 	while (curNode != NULL) {
 		if (curNode->data == addr) {
-			delAfter(lastNode);
+			if (curNode == base_node)
+				base_node = NULL;
+			else
+				delAfter(lastNode);
 			if (getFreeSpace() > 16384)
 				sbrk(-16384);
 			return;
 		}
-
+		lastNode = curNode;
+		curNode = curNode->next;
 	}
-	lastNode = curNode;
-	curNode = curNode->next;
 }
 size_t getFreeSpace()
 {
 	malloc_node_t *endNode = getEndNode();
 	size_t upperAddr = (size_t)sbrk(0);
-	size_t lowerAddr = (size_t)endNode+endNode->length+sizeof(malloc_node_t);
+	size_t lowerAddr;
+	if (endNode)
+		lowerAddr = (size_t)endNode+endNode->length+sizeof(malloc_node_t);
+	else
+		return 0;
 	return upperAddr-lowerAddr;
 }
 void *getOriginalBreak()
