@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <stdint.h>
+#include <bits/fcntl.h>
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_X86_64
 /*Forward declarations in unistd.h*/
@@ -46,7 +47,7 @@ ssize_t read(int fileno, void* outbuf, size_t count) {
                 :);
   return (bytes_read);
 }
-int open(const char* pathname, int flags, mode_t mode) {
+int _open(const char* pathname, int flags, mode_t mode) {
 	/*Declare variables*/
 	int file;
 	/*End variables*/
@@ -131,6 +132,20 @@ void* sbrk(intptr_t incr) {
 	/*Set errno and fail*/
 	errno = ENOMEM;
 	return (void*)-1;
+}
+mode_t umask(mode_t cmask)
+{
+	cmask &= 0777;
+	mode_t ret;
+	__asm__ __volatile__
+	(
+		"movq $95, %%rax\n"
+		"syscall\n"
+		: "=a" (ret)
+		: "D" (cmask)
+		:
+	);
+	return cmask;
 }
 #endif
 #endif

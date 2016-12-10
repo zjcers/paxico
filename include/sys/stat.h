@@ -5,6 +5,8 @@
 #define _LIBSIMPLEC_
 #endif
 
+#include <sys/types.h>
+
 /*Constants for file types*/
 #define S_IFMT	0170000
 #define S_IFBLK	0060000
@@ -60,3 +62,5 @@
 /*return non-zero if m represents a symbolic links*/
 #define S_ISLNK(m) (m & S_IFLNK)
 #endif
+/* functions */
+mode_t umask(mode_t cmask);
