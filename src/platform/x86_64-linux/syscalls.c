@@ -160,5 +160,18 @@ int fcntl(int fd, int cmd, int arg)
 	);
 	return ret;
 }
+off_t lseek(int fd, off_t offset, int whence)
+{
+	off_t ret;
+	__asm__ __volatile__
+	(
+		"movq $8, %%rax\n"
+		"syscall\n"
+		: "=a" (ret)
+		: "D" ((unsigned int)fd), "S" (offset), "d" (whence)
+		:
+	);
+	return ret;
+}
 #endif
 #endif
