@@ -47,7 +47,7 @@ ssize_t read(int fileno, void* outbuf, size_t count) {
                 :);
   return (bytes_read);
 }
-int _open(const char* pathname, int flags, mode_t mode) {
+int open(const char* pathname, int flags, mode_t mode) {
 	/*Declare variables*/
 	int file;
 	/*End variables*/
@@ -142,10 +142,23 @@ mode_t umask(mode_t cmask)
 		"movq $95, %%rax\n"
 		"syscall\n"
 		: "=a" (ret)
-		: "D" (cmask)
+		: "D" ((long)cmask)
 		:
 	);
-	return cmask;
+	return ret;
+}
+int fcntl(int fd, int cmd, int arg)
+{
+	int ret;
+	__asm__ __volatile__
+	(
+		"movq $72, %%rax\n"
+		"syscall\n"
+		: "=a" (ret)
+		: "D" (fd), "S" (cmd), "d" (arg)
+		:
+	);
+	return ret;
 }
 #endif
 #endif
