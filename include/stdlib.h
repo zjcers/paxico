@@ -34,7 +34,7 @@ long strtol(const char* src, char** endptr, int base);
 long long int strtoll(const char* src, char** endptr, int base);
 
 /*number to string conversions*/
-char* itoa(int value, char* str, size_t base);
+char* itoa(int value, char* str, int base);
 
 /*dynamic memory*/
 void *calloc(size_t nitems, size_t size);
@@ -50,7 +50,7 @@ void exit(int status);
 char *getenv(const char *name);
 int system(const char* command);
 
-/*binary search and quick sort*/
+/*binary search and quick sort (actually introsort)*/
 void* bsearch(const void* key, const void* base, size_t nitems, size_t size, int (*compar)(const void*, const void*));
 void qsort(void* base, size_t nitems, size_t size, int (*compar)(const void *, const void*));
 
