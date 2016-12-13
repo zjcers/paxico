@@ -3,16 +3,17 @@
 /*Computes the natural log of x*/
 double log(double x) {
 	double output;
-	__asm__ volatile ("fld1\n"
-										"fldl %1\n"
-										"fyl2x\n"
-										"fldl2e\n"
-										"fdivrp\n"
-										"fstpl %0\n"
-										: "=m" (output)
-										: "m" (x)
-										: "st"
-									);
+	__asm__ __volatile__ (
+		"fld1\n"
+		"fldl %1\n"
+		"fyl2x\n"
+		"fldl2e\n"
+		"fdivrp\n"
+		"fstpl %0\n"
+		: "=m" (output)
+		: "m" (x)
+		: "st"
+	);
 	return output;
 }
 #else
