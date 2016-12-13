@@ -4,4 +4,5 @@ double pow(double base, double power);
 double fabs(double x);
 double log(double x);
 double log10(double x);
+double ceil(double x);
 #endif
