@@ -18,6 +18,11 @@ static void reverse(char *str, int len)
 }
 char* itoa(int value, char *str, int base)
 {
+	if (value == 0) {
+		str[0] = '0';
+		str[1] = 0;
+		return str;
+	}
 	size_t i = 0;
 	char *tstr = str;
 	if (value < 0) {
