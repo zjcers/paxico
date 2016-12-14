@@ -1,2 +1,2 @@
 noinst_LTLIBRARIES = libstdio.la
-libstdio_la_SOURCES = puts.c printf.c
+libstdio_la_SOURCES = puts.c printf.c open.c
