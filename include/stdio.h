@@ -37,5 +37,6 @@ int sprintf(char* buffer, const char* format, ...);
 FILE *fdopen(int fd, const char *mode);
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
 size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+int fflush(FILE *stream);
 
 #endif
