@@ -22,15 +22,16 @@
 #ifdef PLATFORM_X86_64
 /*Computes floating point absolute value*/
 double fabs(double x) {
+	double X;
 	__asm__ volatile (
-		"fldl %0\n"
+		"fldl %1\n"
 		"fabs\n"
 		"fstpl %0\n"
-		: "=m" (x)
-		: "0" (x)
+		: "=m" (X)
+		: "m" (x)
 		: "st"
 	);
-	return x;
+	return X;
 }
 #else
 double fabs(double x) {
