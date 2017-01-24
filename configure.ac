@@ -1,6 +1,6 @@
 
 dnl Initialize autoconf and automake
-AC_INIT(LibsimpleC, 0.1)
+AC_INIT(Project Paxico, 0.1)
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -49,6 +49,7 @@ tests/stdlib/Makefile
 tests/string/Makefile
 tests/memory/Makefile
 tests/stdarg/Makefile
+tests/misc/Makefile
 tests/platform/Makefile
 tests/platform/PLATFORM_LINUX/Makefile
 include/Makefile
