@@ -19,7 +19,9 @@
  * Defines bsearch()
  */
 #include <stdint.h>
+#ifndef PAXICOITEMAT
 #define PAXICOITEMAT(base, size, i) (base+(size*i))
+#endif
 void* bsearch(const void* key, const void* base, size_t nitems, size_t size, int (*compar)(const void*, const void*))
 {
 	int i = nitems/2;
