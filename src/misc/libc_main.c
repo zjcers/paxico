@@ -24,6 +24,7 @@
 FILE *stdout;
 FILE *stdin;
 FILE *stderr;
+struct PAXICO_exit_handler_t* PAXICO_exit_handlers = NULL;
 int main (int argc, char const *argv[], char const *envp[]);
 void _PAXICO_libc_main(int argc, char const *argv[], char const *envp[]) {
 	init_malloc();

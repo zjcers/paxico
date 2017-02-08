@@ -19,7 +19,7 @@
  * Declares basic functionality and also a few random math things
  */
 #ifndef _PAXICO_STDLIB_H
-#define _PAXICO_STDLIB_H
+#define _PAXICO_STDLIB_H 1
 /*Set the branding macro*/
 #ifndef _PAXICO_LIBC_
 #define _PAXICO_LIBC_
@@ -88,8 +88,4 @@ ldiv_t ldiv(long int n, long int d);
 int rand();
 void srand(unsigned int seed);
 
-/*Dirty shim until
-void exit(int status);
-is implemented:*/
-#define exit(status) _exit(status)
 #endif

@@ -1,5 +1,5 @@
 /*
- * include/libc.h
+ * src/stdlib/exit.c
  * Copyright 2016 Zane J Cersovsky
  * This file is part of Project Paxico.
 
@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Project Paxico.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Declares misc libc functions. Non-standard.
+ * Defines exit()
  */
-#ifndef _PAXICO_LIBC_H
-#define _PAXICO_LIBC_H
-/*Set the branding macro*/
-#ifndef _PAXICO_LIBC_
-#define _PAXICO_LIBC_
-#endif
-void __stack_chk_fail(void);
-struct PAXICO_exit_handler_t {
-	void (*func)(void);
-	struct PAXICO_exit_handler_t *next;
-};
-extern struct PAXICO_exit_handler_t *PAXICO_exit_handlers;
-#endif
+#include <stdlib.h>
+#include "libc.h"
+void exit(int status)
+{
+	struct PAXICO_exit_handler_t* base = PAXICO_exit_handlers;
+	if (base == NULL) {
+		goto exit_end;
+	}
+	while (base != NULL) {
+		base->func();
+		base = base->next;
+	}
+	exit_end:
+		_exit(status);
+}

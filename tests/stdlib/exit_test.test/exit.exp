@@ -1,0 +1,50 @@
+set test "no atexit()"
+set flag "0"
+spawn ./exit_test $flag
+expect eof
+lassign [wait] pid spawnid os_error_flag value
+if {$os_error_flag == 0} {
+  if {$value == 0} {
+	pass "$test"
+  } else {
+	send_user "$test FAIL (Wrong value returned)\n"
+	fail "$test"
+  }
+} else {
+  send_user "$test FAIL (OS error)\n"
+  fail "$test"
+}
+
+set test "one atexit()"
+set flag "1"
+spawn ./exit_test $flag
+expect "Hello World!\n"
+lassign [wait] pid spawnid os_error_flag value
+if {$os_error_flag == 0} {
+  if {$value == 0} {
+	pass "$test"
+  } else {
+	send_user "$test FAIL (Wrong value returned)\n"
+	fail "$test"
+  }
+} else {
+  send_user "$test FAIL (OS error)\n"
+  fail "$test"
+}
+
+set test "many atexit()"
+set flag "2"
+spawn ./exit_test $flag
+expect "9\n"
+lassign [wait] pid spawnid os_error_flag value
+if {$os_error_flag == 0} {
+  if {$value == 0} {
+	pass "$test"
+  } else {
+	send_user "$test FAIL (Wrong value returned)\n"
+	fail "$test"
+  }
+} else {
+  send_user "$test FAIL (OS error)\n"
+  fail "$test"
+}
